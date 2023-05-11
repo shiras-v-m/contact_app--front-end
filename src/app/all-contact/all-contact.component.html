@@ -1,0 +1,85 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <h1>All Contacts
+                <a class="btn btn-success ms-5" routerLink="add-contact"><i class="fa-solid fa-user-plus"></i> Add New</a>
+            </h1>
+            <!-- content -->
+            <p style="text-align:justify;" class="">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus ad officiis harum, odit itaque aperiam enim quidem optio fugit molestias qui neque perspiciatis eos debitis ea quo sit alias. Ad.
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta, quisquam. Numquam modi, officiis rerum dolore error cum, harum distinctio dolores ab cumque dicta aliquam asperiores dolorem mollitia ipsum non et.</p>
+            
+            <!-- search -->
+            <div class="row mt-5">
+                <div class="col-lg-2 fw-bolder">
+                    search Contact:
+                </div>
+                <div class="col-lg-6">
+                    <input [(ngModel)]="searchKey" type="text" placeholder="Type contact Name Here!!" class="form-control me-auto"> 
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+<!--Loading spinner  -->
+<div *ngIf="isLoading && allContacts.length==0" class="text-center mt-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <div class="visually-hidden">Loading...</div>
+</div>
+
+<!-- if no contact match to the input field -->
+<div *ngIf="(allContacts | filter : searchKey : 'name').length==0 && !isLoading" >
+    <h3 style="text-align: center;margin-top: 20px;">No contact found</h3>
+</div>
+
+<!-- error msg div errorMsg -->
+<div *ngIf="errorMsg" class="alert alert-danger mt-5" role="alert">
+    {{errorMsg}}
+
+</div>
+
+<!-- contact card desing -->
+
+<div class="container mt-5">
+    <div *ngIf="!isLoading && allContacts.length>0" class="row">
+        <div class="col-lg-6 mb-3" *ngFor="let contact of allContacts | filter : searchKey : 'name'   ">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row align-items-center " >
+                        <div class="col-sm-4 ">
+                            <!-- image -->
+                            <img class="w-50" [src]="contact.photo" alt="user img">
+                        </div>
+                        <div class="col-sm-7">
+                            <!-- content -->
+                            <div class="list-group">
+                                <li class="list-group-item">
+                                    Name:<span class="fw-bold">{{contact.name}}</span>
+                                </li>
+                                <li class="list-group-item">
+                                    Mobile:<span class="fw-bold">{{contact.mobile}}</span>
+                                </li>
+                                <li class="list-group-item">
+                                    email:<span class="fw-bold">{{contact.email}}</span>
+                                </li>
+                            </div>
+                        </div>
+                        <div class="col-sm-1 d-flex flex-column justify-content-center align-items-center">
+                            <!-- actions -->
+                            <!-- view  -->
+                            <a class="text-light btn btn-warning mb-1" routerLink="view-contact/{{contact.id}}"><i class="fa-solid fa-eye"></i></a>
+                            <!-- edit -->
+                            <a class="text-light btn btn-success mb-1" routerLink="edit-contact/{{contact.id}}"><i class="fa-solid fa-pen"></i></a>
+                            <!-- delete -->
+                            <button (click)="deleteContact(contact.id)" class="text-light btn btn-danger mb-1" href=""><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
